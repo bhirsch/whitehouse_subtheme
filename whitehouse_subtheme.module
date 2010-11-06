@@ -1,0 +1,924 @@
+<?php
+/**
+ * @file subtheme module form.
+ */
+
+/**
+ * Implementation of hook_form_alter().
+ */
+function whitehouse_subtheme_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'subtheme_form') {
+
+  // Don't forget to include enctype, otherwise uploads won't work!
+  $form['#attributes'] = array('enctype' => 'multipart/form-data');
+
+  // Site name
+  $form['logo']['subtheme_class--hdrttl_visibility'] = array(
+    '#type' => 'select',
+    '#title' => t('Site Name'),
+    '#default_value' => variable_get('subtheme_class--hdrttl_visibility', 'visible'),
+    '#options' => array(
+      'visible' => t('Visible'),
+      'hidden' => t('Hidden'),
+    ),
+    '#weight' => -1,
+  );
+
+  // Primary Menu
+  $form['primary_menu'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Main Menu CSS'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  $form['primary_menu']['subtheme_class--hdrflag_visibility'] = array(
+    '#type' => 'select',
+    '#title' => t('Flag Icon'),
+    '#default_value' => variable_get('subtheme_class--hdrflag_visibility', 'visible'),
+    '#options' => array(
+      'visible' => t('Visible'),
+      'hidden' => t('Hidden'),
+    ),
+    '#weight' => -1,
+  );
+  $links = menu_primary_links();
+  foreach ($links as $link) {
+    $id = whitehouse_subtheme_id($link['title']);
+    $key = 'subtheme_'. $id;
+    // Group by menu item
+    $form['primary_menu'][$id] = array(
+      '#type' => 'fieldset',
+      '#title' => $link['title'] ." ( li#$id )",
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+    );
+    $width = 'subtheme_id--topnav----element--li---id--'. $id .'_width';
+    $form['primary_menu'][$id][$width] = array(
+      '#type' => 'textfield',
+      '#title' => t('Width'),
+      '#default_value' => variable_get($width, NULL), 
+      '#description' => t('Enter width (e.g. 100px or 20%)'),
+    );
+    $border_left = 'subtheme_id--topnav----element--li---id--'. $id .'_border-left';
+    $form['primary_menu'][$id][$border_left] = array(
+      '#type' => 'textfield',
+      '#title' => t('Left border on menu item'),
+      '#default_value' => variable_get($border_left, '1px solid #012B5B'),
+      '#description' => t('Include a border on the left of this item. Default: 1px solid #012B5B. '
+                         .'Enter "none" for no border.'),
+    );
+    $margin_left = 'subtheme_id--topnav----element--li---id--'. $id .'_margin-left';
+    $form['primary_menu'][$id][$margin_left] = array(
+      '#type' => 'textfield',
+      '#title' => t('Left margin'),
+      '#default_value' => variable_get($margin_left, NULL),
+      '#description' => t('Enter width in pixels (e.g. 100px or 20%)'),
+    );
+    // topnav li#id a
+    $form['primary_menu'][$id]['a'] = array(
+      '#type' => 'fieldset',
+      '#title' => $link['title'] ." ( li#$id a )",
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+    );
+    $height = 'subtheme_id--topnav----element--li---id--'. $id .'----element--a_height';
+    $form['primary_menu'][$id]['a'][$height] = array(
+      '#type' => 'textfield',
+      '#title' => t('height'),
+      '#default_value' => variable_get($height, NULL ),
+      '#description' => t('Enter height in pixels (default is 15px)'),
+    );
+    $texttransform = 'subtheme_id--topnav----element--li---id--'. $id .'----element--a_text-transform';
+    $form['primary_menu'][$id]['a'][$texttransform] = array(
+      '#type' => 'textfield',
+      '#title' => t('text-transform'),
+      '#default_value' => variable_get($texttransform, NULL ),
+      '#description' => t('E.g. none, capitalize, uppercase, lowercase'),
+    );
+    $background = 'subtheme_id--topnav----element--li---id--'. $id .'----element--a_background';
+    $form['primary_menu'][$id]['a'][$background] = array(
+      '#type' => 'textfield',
+      '#title' => t('background'),
+      '#default_value' => variable_get($background, NULL ),
+      '#description' => t('E.g. red, blue, #ffffff, #000000'),
+    );
+    $color = 'subtheme_id--topnav----element--li---id--'. $id .'----element--a_color';
+    $form['primary_menu'][$id]['a'][$color] = array(
+      '#type' => 'textfield',
+      '#title' => t('color'),
+      '#default_value' => variable_get($color, NULL ),
+      '#description' => t('Text color. E.g. red, blue, #ffffff, #000000'),
+    );
+    $fontfamily = 'subtheme_id--topnav----element--li---id--'. $id .'----element--a_font-family';
+    $form['primary_menu'][$id]['a'][$fontfamily] = array(
+      '#type' => 'textfield',
+      '#title' => t('font-family'),
+      '#default_value' => variable_get($fontfamily, NULL ),
+      '#description' => t('E.g. Arial, "Times New Roman"'),
+    );
+    $fontsize = 'subtheme_id--topnav----element--li---id--'. $id .'----element--a_font-size';
+    $form['primary_menu'][$id]['a'][$fontsize] = array(
+      '#type' => 'textfield',
+      '#title' => t('font-size'),
+      '#default_value' => variable_get($fontsize, NULL ),
+      '#description' => t('E.g. 20px, 20%, or 2em'),
+    );
+    $bordertop = 'subtheme_id--topnav----element--li---id--'. $id .'----element--a_border-top';
+    $form['primary_menu'][$id]['a'][$bordertop] = array(
+      '#type' => 'textfield',
+      '#title' => t('border-top'),
+      '#default_value' => variable_get($bordertop, NULL ),
+      '#description' => t('E.g. 4px solid red'),
+    );
+    $borderbottom = 'subtheme_id--topnav----element--li---id--'. $id .'----element--a_border-bottom';
+    $form['primary_menu'][$id]['a'][$borderbottom] = array(
+      '#type' => 'textfield',
+      '#title' => t('border-bottom'),
+      '#default_value' => variable_get($borderbottom, NULL ),
+      '#description' => t('E.g. 4px solid red'),
+    );
+    $borderright = 'subtheme_id--topnav----element--li---id--'. $id .'----element--a_border-right';
+    $form['primary_menu'][$id]['a'][$borderright] = array(
+      '#type' => 'textfield',
+      '#title' => t('border-right'),
+      '#default_value' => variable_get($borderright, NULL ),
+      '#description' => t('E.g. 4px solid red'),
+    );
+    $borderleft = 'subtheme_id--topnav----element--li---id--'. $id .'----element--a_border-left';
+    $form['primary_menu'][$id]['a'][$borderleft] = array(
+      '#type' => 'textfield',
+      '#title' => t('border-left'),
+      '#default_value' => variable_get($borderleft, NULL ),
+      '#description' => t('E.g. 4px solid red'),
+    );
+    // topnav li#id a:hover
+    $form['primary_menu'][$id]['a-hover'] = array(
+      '#type' => 'fieldset',
+      '#title' => $link['title'] ." ( li#$id a:hover )",
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+    );
+    $height = 'subtheme_id--topnav----element--li---id--'. $id .'----element--a:hover_height';
+    $form['primary_menu'][$id]['a-hover'][$height] = array(
+      '#type' => 'textfield',
+      '#title' => t('height'),
+      '#default_value' => variable_get($height, NULL ),
+      '#description' => t('Enter height in pixels (default is 15px)'),
+    );
+    $texttransform = 'subtheme_id--topnav----element--li---id--'. $id .'----element--a:hover_text-transform';
+    $form['primary_menu'][$id]['a-hover'][$texttransform] = array(
+      '#type' => 'textfield',
+      '#title' => t('text-transform'),
+      '#default_value' => variable_get($texttransform, NULL ),
+      '#description' => t('E.g. none, capitalize, uppercase, lowercase'),
+    );
+    $background = 'subtheme_id--topnav----element--li---id--'. $id .'----element--a:hover_background';
+    $form['primary_menu'][$id]['a-hover'][$background] = array(
+      '#type' => 'textfield',
+      '#title' => t('background'),
+      '#default_value' => variable_get($background, NULL ),
+      '#description' => t('E.g. red, blue, #ffffff, #000000'),
+    );
+    $color = 'subtheme_id--topnav----element--li---id--'. $id .'----element--a:hover_color';
+    $form['primary_menu'][$id]['a-hover'][$color] = array(
+      '#type' => 'textfield',
+      '#title' => t('color'),
+      '#default_value' => variable_get($color, NULL ),
+      '#description' => t('Text color. E.g. red, blue, #ffffff, #000000'),
+    );
+    $fontfamily = 'subtheme_id--topnav----element--li---id--'. $id .'----element--a:hover_font-family';
+    $form['primary_menu'][$id]['a-hover'][$fontfamily] = array(
+      '#type' => 'textfield',
+      '#title' => t('font-family'),
+      '#default_value' => variable_get($fontfamily, NULL ),
+      '#description' => t('E.g. Arial, "Times New Roman"'),
+    );
+    $fontsize = 'subtheme_id--topnav----element--li---id--'. $id .'----element--a:hover_font-size';
+    $form['primary_menu'][$id]['a-hover'][$fontsize] = array(
+      '#type' => 'textfield',
+      '#title' => t('font-size'),
+      '#default_value' => variable_get($fontsize, NULL ),
+      '#description' => t('E.g. 20px, 20%, or 2em'),
+    );
+    $bordertop = 'subtheme_id--topnav----element--li---id--'. $id .'----element--a:hover_border-top';
+    $form['primary_menu'][$id]['a-hover'][$bordertop] = array(
+      '#type' => 'textfield',
+      '#title' => t('border-top'),
+      '#default_value' => variable_get($bordertop, NULL ),
+      '#description' => t('E.g. 4px solid red'),
+    );
+    $borderbottom = 'subtheme_id--topnav----element--li---id--'. $id .'----element--a:hover_border-bottom';
+    $form['primary_menu'][$id]['a-hover'][$borderbottom] = array(
+      '#type' => 'textfield',
+      '#title' => t('border-bottom'),
+      '#default_value' => variable_get($borderbottom, NULL ),
+      '#description' => t('E.g. 4px solid red'),
+    );
+    $borderright = 'subtheme_id--topnav----element--li---id--'. $id .'----element--a:hover_border-right';
+    $form['primary_menu'][$id]['a-hover'][$borderright] = array(
+      '#type' => 'textfield',
+      '#title' => t('border-right'),
+      '#default_value' => variable_get($borderright, NULL ),
+      '#description' => t('E.g. 4px solid red'),
+    );
+    $borderleft = 'subtheme_id--topnav----element--li---id--'. $id .'----element--a:hover_border-left';
+    $form['primary_menu'][$id]['a-hover'][$borderleft] = array(
+      '#type' => 'textfield',
+      '#title' => t('border-left'),
+      '#default_value' => variable_get($borderleft, NULL ),
+      '#description' => t('E.g. 4px solid red'),
+    );
+  }
+  // Advanced Primary Menu Settings
+  $form['primary_menu']['advanced'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Advanced CSS Settings'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  // header wrapper { height: X }  
+  $form['primary_menu']['advanced']['subtheme_class--hdrwrpr_height'] = array(
+    '#type' => 'textfield',
+    '#title' => t('header wrapper height'),
+    '#default_value' => variable_get('subtheme_class--hdrwrpr_height', NULL ),
+    '#description' => t('Height from the top of the screen to the bottom of '
+                       .'the header area (that is, the bottom of the Main Menu. '
+                       .'Default: 108px.'),
+  );
+  // top of flag 
+  $form['primary_menu']['advanced']['subtheme_class--hdrflag_top'] = array(
+    '#type' => 'textfield',
+    '#title' => t('flag top'),
+    '#default_value' => variable_get('subtheme_class--hdrflag_top', NULL ),
+    '#description' => t('Height from the top of the screen to the top '
+                       .'of the flag.'),
+  );
+  // ul#topnav { top: X}
+  $form['primary_menu']['advanced']['subtheme_element--ul---id--topnav_top'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Main Menu Top ( ul#topnav { top: X; } ) '),
+    '#default_value' => variable_get('subtheme_element--ul---id--topnav_top', NULL ),
+    '#description' => t('Distance from the top of the screen to the top of the '
+                       .'Main Menu. Default: 67px. '),
+  );
+  // #navbar-inner a
+  $form['primary_menu']['advanced']['a'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Main Menu ( #navbar-inner a ) '),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  $fontfamily = 'subtheme_id--navbar-inner----element--a_font-family';
+  $form['primary_menu']['advanced']['a'][$fontfamily] = array(
+    '#type' => 'textfield',
+    '#title' => t('Font Family'),
+    '#default_value' => variable_get($fontfamily, NULL ),
+    '#description' => t('e.g. Arial or "Times New Roman" '),
+  );
+  $fontsize = 'subtheme_id--navbar-inner----element--a_font-size';
+  $form['primary_menu']['advanced']['a'][$fontsize] = array(
+    '#type' => 'textfield',
+    '#title' => t('Font Size'),
+    '#default_value' => variable_get($fontsize, NULL ),
+    '#description' => t('e.g. 14px'),
+  );
+  $fontweight = 'subtheme_id--navbar-inner----element--a_font-weight';
+  $form['primary_menu']['advanced']['a'][$fontweight] = array(
+    '#type' => 'textfield',
+    '#title' => t('Font Weight'),
+    '#default_value' => variable_get($fontweight, NULL ),
+    '#description' => t('e.g. bold or normal'),
+  );
+  $color = 'subtheme_id--navbar-inner----element--a_color';
+  $form['primary_menu']['advanced']['a'][$color] = array(
+    '#type' => 'textfield',
+    '#title' => t('Text Color'),
+    '#default_value' => variable_get($color, NULL ),
+    '#description' => t('E.g. red, black, #ffffff, #000000. '),
+  );
+  $background = 'subtheme_id--navbar-inner----element--a_background-color';
+  $form['primary_menu']['advanced']['a'][$background] = array(
+    '#type' => 'textfield',
+    '#title' => t('background-color'),
+    '#default_value' => variable_get($background, NULL ),
+    '#description' => t('E.g. red, black, #ffffff, #000000. '),
+  );
+  $texttransform = 'subtheme_id--navbar-inner----element--a_text-transform';
+  $form['primary_menu']['advanced']['a'][$texttransform] = array(
+    '#type' => 'textfield',
+    '#title' => t('text-transform'),
+    '#default_value' => variable_get($texttransform, NULL ),
+    '#description' => t('E.g. none, capitalize, uppercase, lowercase'),
+  );
+  $fontfamily = 'subtheme_id--navbar----element--a_font-family';
+  $form['primary_menu']['advanced']['a'][$fontfamily] = array(
+    '#type' => 'textfield',
+    '#title' => t('font-family'),
+    '#default_value' => variable_get($fontfamily, NULL ),
+    '#description' => t('E.g. Arial, "Times New Roman"'),
+  );
+  $fontsize = 'subtheme_id--navbar----element--a_font-size';
+  $form['primary_menu']['advanced']['a'][$fontsize] = array(
+    '#type' => 'textfield',
+    '#title' => t('font-size'),
+    '#default_value' => variable_get($fontsize, NULL ),
+    '#description' => t('E.g. 20px, 20%, or 2em'),
+  );
+  $bordertop = 'subtheme_id--navbar----element--a_border-top';
+  $form['primary_menu']['advanced']['a'][$bordertop] = array(
+    '#type' => 'textfield',
+    '#title' => t('border-top'),
+    '#default_value' => variable_get($bordertop, NULL ),
+    '#description' => t('E.g. 4px solid red'),
+  );
+  $borderbottom = 'subtheme_id--navbar----element--a_border-bottom';
+  $form['primary_menu']['advanced']['a'][$borderbottom] = array(
+    '#type' => 'textfield',
+    '#title' => t('border-bottom'),
+    '#default_value' => variable_get($borderbottom, NULL ),
+    '#description' => t('E.g. 4px solid red'),
+  );
+  $borderright = 'subtheme_id--navbar----element--a_border-right';
+  $form['primary_menu']['advanced']['a'][$borderright] = array(
+    '#type' => 'textfield',
+    '#title' => t('border-right'),
+    '#default_value' => variable_get($borderright, NULL ),
+    '#description' => t('E.g. 4px solid red'),
+  );
+  $borderleft = 'subtheme_id--navbar----element--a_border-left';
+  $form['primary_menu']['advanced']['a'][$borderleft] = array(
+    '#type' => 'textfield',
+    '#title' => t('border-left'),
+    '#default_value' => variable_get($borderleft, NULL ),
+    '#description' => t('E.g. 4px solid red'),
+  );
+  $letterspacing = 'subtheme_id--navbar----element--a_letter-spacing';
+  $form['primary_menu']['advanced']['a'][$letterspacinge] = array(
+    '#type' => 'textfield',
+    '#title' => t('letter-spacing'),
+    '#default_value' => variable_get($letterspacing, NULL ),
+    '#description' => t('Default: 2px'),
+  );
+  $textalign = 'subtheme_id--navbar----element--a_text-align';
+  $form['primary_menu']['advanced']['a'][$textalign] = array(
+    '#type' => 'textfield',
+    '#title' => t('text-align'),
+    '#default_value' => variable_get($textalign, NULL ),
+    '#description' => t('Default: center'),
+  );
+  $paddingtop = 'subtheme_id--navbar----element--a_padding-top';
+  $form['primary_menu']['advanced']['a'][$paddingtop] = array(
+    '#type' => 'textfield',
+    '#title' => t('padding-top'),
+    '#default_value' => variable_get($paddingtop, NULL ),
+    '#description' => t('Default: 8px'),
+  );
+  $paddingbottom = 'subtheme_id--navbar----element--a_padding-bottom';
+  $form['primary_menu']['advanced']['a'][$paddingbottom] = array(
+    '#type' => 'textfield',
+    '#title' => t('padding-bottom'),
+    '#default_value' => variable_get($paddingbottom, NULL ),
+    '#description' => t('Default: 8px'),
+  );
+  $marginleft = 'subtheme_id--navbar----element--a_margin-left';
+  $form['primary_menu']['advanced']['a'][$marginleft] = array(
+    '#type' => 'textfield',
+    '#title' => t('margin-left'),
+    '#default_value' => variable_get($marginleft, NULL ),
+    '#description' => t('Default: 0px'),
+  );
+  $marginright = 'subtheme_id--navbar----element--a_margin-right';
+  $form['primary_menu']['advanced']['a'][$marginleft] = array(
+    '#type' => 'textfield',
+    '#title' => t('margin-right'),
+    '#default_value' => variable_get($marginright, NULL ),
+    '#description' => t('Default: 0px'),
+  );
+  // #navbar-inner a:hover
+  $form['primary_menu']['advanced']['a-hover'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Main Menu ( #navbar-inner a:hover ) '),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+/*
+    border-top: 3px solid #870100;
+    color: #336699;
+    background-color: white;
+    padding-top: 4px; 
+    padding-bottom: 10px;
+// */
+  $form['primary_menu']['advanced']['a-hover'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Main Menu ( #navbar-inner a:hover ) '),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  $color = 'subtheme_id--navbar-inner----element--a:hover_color';
+  $form['primary_menu']['advanced']['a-hover'][$color] = array(
+    '#type' => 'textfield',
+    '#title' => t('Text Color'),
+    '#default_value' => variable_get($color, NULL ),
+    '#description' => t('E.g. red, black, #ffffff, #000000. '),
+  );
+  $background = 'subtheme_id--navbar-inner----element--a:hover_background-color';
+  $form['primary_menu']['advanced']['a-hover'][$background] = array(
+    '#type' => 'textfield',
+    '#title' => t('background-color'),
+    '#default_value' => variable_get($background, NULL ),
+    '#description' => t('E.g. red, black, #ffffff, #000000. '),
+  );
+  $texttransform = 'subtheme_id--navbar-inner----element--a:hover_text-transform';
+  $form['primary_menu']['advanced']['a-hover'][$texttransform] = array(
+    '#type' => 'textfield',
+    '#title' => t('text-transform'),
+    '#default_value' => variable_get($texttransform, NULL ),
+    '#description' => t('E.g. none, capitalize, uppercase, lowercase'),
+  );
+  $fontfamily = 'subtheme_id--navbar-inner----element--a:hover_font-family';
+  $form['primary_menu']['advanced']['a-hover'][$fontfamily] = array(
+    '#type' => 'textfield',
+    '#title' => t('font-family'),
+    '#default_value' => variable_get($fontfamily, NULL ),
+    '#description' => t('E.g. Arial, "Times New Roman"'),
+  );
+  $fontsize = 'subtheme_id--navbar-inner----element--a:hover_font-size';
+  $form['primary_menu']['advanced']['a-hover'][$fontsize] = array(
+    '#type' => 'textfield',
+    '#title' => t('font-size'),
+    '#default_value' => variable_get($fontsize, NULL ),
+    '#description' => t('E.g. 20px, 20%, or 2em'),
+  );
+  $bordertop = 'subtheme_id--navbar-inner----element--a:hover_border-top';
+  $form['primary_menu']['advanced']['a-hover'][$bordertop] = array(
+    '#type' => 'textfield',
+    '#title' => t('border-top'),
+    '#default_value' => variable_get($bordertop, NULL ),
+    '#description' => t('E.g. 4px solid red'),
+  );
+  $borderbottom = 'subtheme_id--navbar-inner----element--a:hover_border-bottom';
+  $form['primary_menu']['advanced']['a-hover'][$borderbottom] = array(
+    '#type' => 'textfield',
+    '#title' => t('border-bottom'),
+    '#default_value' => variable_get($borderbottom, NULL ),
+    '#description' => t('E.g. 4px solid red'),
+  );
+  $borderright = 'subtheme_id--navbar-inner----element--a:hover_border-right';
+  $form['primary_menu']['advanced']['a-hover'][$borderright] = array(
+    '#type' => 'textfield',
+    '#title' => t('border-right'),
+    '#default_value' => variable_get($borderright, NULL ),
+    '#description' => t('E.g. 4px solid red'),
+  );
+  $borderleft = 'subtheme_id--navbar-inner----element--a:hover_border-left';
+  $form['primary_menu']['advanced']['a-hover'][$borderleft] = array(
+    '#type' => 'textfield',
+    '#title' => t('border-left'),
+    '#default_value' => variable_get($borderleft, NULL ),
+    '#description' => t('E.g. 4px solid red'),
+  );
+  $letterspacing = 'subtheme_id--navbar-inner----element--a:hover_letter-spacing';
+  $form['primary_menu']['advanced']['a-hover'][$letterspacinge] = array(
+    '#type' => 'textfield',
+    '#title' => t('letter-spacing'),
+    '#default_value' => variable_get($letterspacing, NULL ),
+    '#description' => t('Default: 2px'),
+  );
+  $textalign = 'subtheme_id--navbar-inner----element--a:hover_text-align';
+  $form['primary_menu']['advanced']['a-hover'][$textalign] = array(
+    '#type' => 'textfield',
+    '#title' => t('text-align'),
+    '#default_value' => variable_get($textalign, NULL ),
+    '#description' => t('Default: center'),
+  );
+  $paddingtop = 'subtheme_id--navbar-inner----element--a:hover_padding-top';
+  $form['primary_menu']['advanced']['a-hover'][$paddingtop] = array(
+    '#type' => 'textfield',
+    '#title' => t('padding-top'),
+    '#default_value' => variable_get($paddingtop, NULL ),
+    '#description' => t('Default: 8px'),
+  );
+  $paddingbottom = 'subtheme_id--navbar-inner----element--a:hover_padding-bottom';
+  $form['primary_menu']['advanced']['a-hover'][$paddingbottom] = array(
+    '#type' => 'textfield',
+    '#title' => t('padding-bottom'),
+    '#default_value' => variable_get($paddingbottom, NULL ),
+    '#description' => t('Default: 8px'),
+  );
+  $marginleft = 'subtheme_id--navbar-inner----element--a:hover_margin-left';
+  $form['primary_menu']['advanced']['a-hover'][$marginleft] = array(
+    '#type' => 'textfield',
+    '#title' => t('margin-left'),
+    '#default_value' => variable_get($marginleft, NULL ),
+    '#description' => t('Default: 0px'),
+  );
+  $marginright = 'subtheme_id--navbar-inner----element--a:hover_margin-right';
+  $form['primary_menu']['advanced']['a-hover'][$marginleft] = array(
+    '#type' => 'textfield',
+    '#title' => t('margin-right'),
+    '#default_value' => variable_get($marginright, NULL ),
+    '#description' => t('Default: 0px'),
+  );
+
+  // Secondary Menu
+  $form['secondary_menu'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Secondary Menu CSS'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  // header secondary menu wrapper { height: X }  
+  $form['secondary_menu']['subtheme_class--hdrupdtwrpr_top'] = array(
+    '#type' => 'textfield',
+    '#title' => t('secondary menu top'),
+    '#default_value' => variable_get('subtheme_class--hdrupdtwrpr_top', NULL ),
+    '#description' => t('Height from the top of the screen to the top '
+                       .'of the secondary menu.'),
+  );
+    //$color = 'subtheme_id--topnav----element--li---id--'. $id .'----element--a_color';
+  $form['secondary_menu']['subtheme_id--secondary----element--a_color'] = array(
+    '#type' => 'textfield',
+    '#title' => t('secondary menu link color'),
+    '#default_value' => variable_get('subtheme_id--secondary----element--a_color', NULL ),
+    '#description' => t('Text color of secondary menu items. E.g. red, blue, #ffffff, #000000'),
+  );
+
+  // Custom Background Elements
+  $form['background'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Background Images'),
+    '#collapsible' => TRUE, 
+    '#collapsed' => TRUE, 
+  );
+  // Alter subtheme form to add fieldsets under background
+  $form = _whitehouse_subtheme_mainbody($form); 
+  $form = _whitehouse_subtheme_footer($form); 
+  $form = _whitehouse_subtheme_subfooter($form);
+  $form = _whitehouse_subtheme_right_col($form);
+
+  // $form['#validate'][] = 'whitehouse_subtheme_validate'; 
+  // $form['#submit'][] = 'whitehouse_subtheme_submit'; 
+  }
+}
+
+/*
+function whitehouse_subtheme_validate(&$form, &$form_state) {
+}
+// */
+
+/*
+function whitehouse_subtheme_submit(&$form, &$form_state) {
+}
+// */
+
+/** 
+ * @param
+ *   title of the link, for which we are creating an id attribute
+ * @return 
+ *   E.g. A link titled "Press Release" gets the id "press-release"
+ */
+// NOTE: This function is copied from template.php.
+// Any changes here should be copied there too. 
+function whitehouse_subtheme_id($id) {
+  $id = str_replace('&', '-', $id);
+  $id = str_replace("'", '-', $id);
+  $id = check_plain($id);
+  $id = trim($id);
+  $id = strtolower($id);  $id = str_replace(' ', '-', $id);
+  $id = str_replace('---', '-', $id);
+  return $id;
+}
+
+/**
+ * Handle file uploads.
+ */
+function whitehouse_subtheme_save_file($form, &$form_state) {
+  // Get parent (the form element that called this function)
+  $parent = $form['#parents'][0];
+  // Check for a new uploaded file, and use that if available.
+  if ($file = file_save_upload($parent)) {
+    // Get file extension.
+    $parts = pathinfo($file->filename);
+    $extension = $parts['extension'];
+    // Check for file subtheme file directories. Create if needed.
+    $directory = file_directory_path() .'/subtheme/';
+    file_check_directory($directory, FILE_CREATE_DIRECTORY);
+//    $directory = file_directory_path() .'/subtheme/';
+//    file_check_directory($directory, FILE_CREATE_DIRECTORY);
+    // Name the file. Use consistent names and replace to prevent over-storage by user.
+    switch ($parent) {
+
+    // .mainbody { background: }  
+    case 'subtheme-mainbody-background': 
+        $file_path = file_directory_path() .'/subtheme/bg-main.'. $extension;
+        $background = '#FAFAFA ';
+        $background .= 'url(/'. $file_path .') '; 
+        $background .= 'no-repeat scroll center top ';
+        // Store background
+        $form_state['values']['subtheme-mainbody-url'] = $file_path;
+        $form_state['values']['subtheme_class--mainbody_background'] = $background;
+      break;
+
+    // .ftrwrpr { background: }
+    case 'subtheme-ftrwrpr-background': 
+        $file_path = file_directory_path() .'/subtheme/bg-footer.'. $extension;
+        $background = '#FFFFFF ';
+        $background .= 'url(/'. $file_path .') '; 
+        $background .= 'no-repeat scroll left top ';
+        // Store background
+        $form_state['values']['subtheme-ftrwrpr-url'] = $file_path;
+        $form_state['values']['subtheme_class--ftrwrpr_background'] = $background;
+      break;
+
+    // .subftrwrpr { background: }
+    case 'subtheme-subftrwrpr-background': 
+        $file_path = file_directory_path() .'/subtheme/bg-subftr.'. $extension;
+        $background = 'transparent ';
+        $background .= 'url(/'. $file_path .') '; 
+        $background .= 'no-repeat scroll left top ';
+        // Store background
+        $form_state['values']['subtheme-subftrwrpr-url'] = $file_path;
+        $form_state['values']['subtheme_class--subftrwrpr_background'] = $background;
+      break;
+
+    // #right-col{ background: }
+    case 'subtheme-right-col-background': 
+        $file_path = file_directory_path() .'/subtheme/right_top_back.'. $extension;
+        $background = 'transparent ';
+        $background .= 'url(/'. $file_path .') '; 
+        $background .= 'no-repeat scroll 0 0 ';
+        // Store background
+        $form_state['values']['subtheme-right-col-url'] = $file_path;
+        $form_state['values']['subtheme_id--right-col_background'] = $background;
+      break;
+
+    // .gridwrpr {background: }
+    case 'subtheme-gridwrpr-background':
+        $file_path = file_directory_path() .'/subtheme/main_back1.'. $extension;
+        $background = 'transparent ';
+        $background .= 'url(/'. $file_path .') '; 
+        $background .= 'repeat-y 100% 50% ';
+        // Store background
+        $form_state['values']['subtheme-gridwrpr-url'] = $file_path;
+        $form_state['values']['subtheme_class--gridwrpr_background'] = $background;
+      break;
+    }
+
+    // The image was saved using file_save_upload() and was added to the
+    // files table as a temporary file. We'll make a copy and let the garbage
+    // collector delete the original upload.
+    if (file_copy($file, $file_path, FILE_EXISTS_REPLACE)) {
+      // TODO Why do we have to reload for the new pic to show up?
+      // Flush image cache for this pic.
+      imagecache_image_flush($file_path);
+    }
+  }   
+  return $form;
+}
+
+/**
+ * return $form to subtheme .mainbody
+ */
+function _whitehouse_subtheme_mainbody($form) {
+  // Main body background
+  // .mainbody { background: }
+  $form['background']['mainbody'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Main Body'),
+    '#collapsible' => TRUE, 
+    '#collapsed' => TRUE,
+  );
+  // Get the active background image to display to the user
+  $preset_namespace = 'scale__350x350';
+  $bg = variable_get('subtheme-mainbody-url', NULL);
+  $path = drupal_get_path('theme', 'candidate');
+  $image_filepath = ($bg) ? $bg : $path .'/images/bg-main-new.png'; 
+  $bg_image = theme('imagecache', $preset_namespace, $image_filepath, $alt, $title, $attributes);
+  // Prompt user to upload own graphic for main background here
+  $form['background']['mainbody']['subtheme-mainbody-background'] = array(
+    '#type' => 'file',
+    '#title' => t('Upload Graphic'),
+    '#size' => 30,
+    '#element_validate' => array('whitehouse_subtheme_save_file'),
+  );
+  // Display background image.
+  $form['background']['mainbody']['subtheme-mainbody-display'] = array(
+    '#type' => 'item',
+    '#title' => $bg_image,
+  );
+  // URL to the background image. (This cannot be modified directly.)
+  $link = l("background image", $image_filepath);
+  $form['background']['mainbody']['subtheme-mainbody-url'] = array(
+    '#type' => 'item',
+    '#title' => $link,
+  );
+   // Store the url along with other CSS settings here (show this one to the user)
+  $form['background']['mainbody']['subtheme_class--mainbody_background'] = array(
+  // $form['background']['mainbody']['subtheme_.mainbody_background'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Main Body CSS'),
+    '#default_value' => variable_get('subtheme_class--mainbody_background', NULL),
+  );
+
+  return $form; 
+}
+
+/**
+ * subtheme footer 
+ */
+function _whitehouse_subtheme_footer($form) {
+  // Footer background
+  // .ftrwrpr { background: } 
+  $form['background']['ftrwrpr'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Footer'),
+    '#collapsible' => TRUE, 
+    '#collapsed' => TRUE,
+  );
+  // Get the active background image to display to the user
+  $preset_namespace = 'scale__350x350';
+  $bg = variable_get('subtheme-ftrwrpr-url', NULL);
+  $path = drupal_get_path('theme', 'candidate'); // TODO Subtheme whitehouse or candidate?
+  $image_filepath = ($bg) ? $bg : $path .'/images/bg-footer.jpg'; 
+  $bg_image = theme('imagecache', $preset_namespace, $image_filepath, $alt, $title, $attributes);
+  // Prompt user to upload own graphic for main background here
+  $form['background']['ftrwrpr']['subtheme-ftrwrpr-background'] = array(
+    '#type' => 'file',
+    '#title' => t('Upload Footer Background'),
+    '#size' => 30,
+    '#element_validate' => array('whitehouse_subtheme_save_file'),
+  );
+  // Display background image.
+  $form['background']['ftrwrpr']['subtheme-ftrwrpr-display'] = array(
+    '#type' => 'item',
+    '#title' => $bg_image,
+  );
+  // URL to the background image. (This cannot be modified directly.)
+  $link = l("background image", $image_filepath);
+  $form['background']['ftrwrpr']['subtheme-ftrwrpr-url'] = array(
+    '#type' => 'item',
+    '#title' => $link, 
+  );
+   // Store the url along with other CSS settings here (show this one to the user)
+  $form['background']['ftrwrpr']['subtheme_class--ftrwrpr_background'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Footer Background CSS'),
+    '#default_value' => variable_get('subtheme_class--ftrwrpr_background', NULL),
+  );
+
+  return $form;
+}
+
+/**
+ * subtheme subfooter
+ */
+function _whitehouse_subtheme_subfooter($form) {
+  // Footer background
+  // .subftrwrpr { background: } 
+  $form['background']['subftrwrpr'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Sub-Footer'),
+    '#collapsible' => TRUE, 
+    '#collapsed' => TRUE,
+  );
+  // Get the active background image to display to the user
+  $preset_namespace = 'scale__350x350';
+  $bg = variable_get('subtheme-subftrwrpr-url', NULL);
+  $path = drupal_get_path('theme', 'whitehouse'); // TODO Subtheme whitehouse or candidate?
+  $image_filepath = ($bg) ? $bg : $path .'/css/images/eop/bg-subftr.jpg'; 
+  $bg_image = theme('imagecache', $preset_namespace, $image_filepath, $alt, $title, $attributes);
+  // Prompt user to upload own graphic for main background here
+  $form['background']['subftrwrpr']['subtheme-subftrwrpr-background'] = array(
+    '#type' => 'file',
+    '#title' => t('Upload Sub-Footer Background'),
+    '#size' => 30,
+    '#element_validate' => array('whitehouse_subtheme_save_file'),
+  );
+  // Display background image.
+  $form['background']['subftrwrpr']['subtheme-subftrwrpr-display'] = array(
+    '#type' => 'item',
+    '#title' => $bg_image,
+  );
+  // URL to the background image. (This cannot be modified directly.)
+  $link = l("background image", $image_filepath);
+  $form['background']['subftrwrpr']['subtheme-subftrwrpr-url'] = array(
+    '#type' => 'item',
+    '#title' => $link, 
+  );
+   // Store the url along with other CSS settings here (show this one to the user)
+  $form['background']['subftrwrpr']['subtheme_class--subftrwrpr_background'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Footer Background CSS'),
+    '#default_value' => variable_get('subtheme_class--subftrwrpr_background', NULL),
+  );
+
+  return $form;
+}
+
+/**
+ * subtheme #right-col 
+ * 
+ * By default #right-col's appearance is made from two images...
+ * 
+ * Right Column Background (Top): 
+ * The top is a rectangle with a light blue fade-to-white
+ * upper left corner. 
+ * 
+ * Right Column background (Bottom): 
+ * The bottom is a not "really" part of 
+ * #right-col. It's a backgound to #gridwrpr.gridwrpr that 
+ * makes it look like the gradient in the right sidebar
+ * extends all the way to the bottom of the content area. 
+ * 
+ */
+function _whitehouse_subtheme_right_col($form) {
+  // #right-col { background: } 
+  $form['background']['right-col'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Right Column'),
+    '#collapsible' => TRUE, 
+    '#collapsed' => TRUE,
+  );
+
+  // Right Column Background (Top)
+  // #right-col { background: } 
+  $form['background']['right-col']['top'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Right Column Top'),
+    '#collapsible' => TRUE, 
+    '#collapsed' => TRUE,
+  );
+  // Get the active background image to display to the user
+  $preset_namespace = 'scale__350x350';
+  $bg = variable_get('subtheme-right-col-url', NULL);
+  $path = drupal_get_path('theme', 'whitehouse'); 
+  $image_filepath = ($bg) ? $bg : $path .'/css/assets/templates/right_top_back.gif'; 
+  $bg_image = theme('imagecache', $preset_namespace, $image_filepath, $alt, $title, $attributes);
+  // Prompt user to upload own graphic for background here.
+  $form['background']['right-col']['top']['subtheme-right-col-background'] = array(
+    '#type' => 'file',
+    '#title' => t('Upload Right Column Background (Top)'),
+    '#size' => 30,
+    '#element_validate' => array('whitehouse_subtheme_save_file'),
+  );
+  // Display background image.
+  $form['background']['right-col']['top']['subtheme-right-col-display'] = array(
+    '#type' => 'item',
+    '#title' => $bg_image,
+  );
+  // URL to the background image. (This cannot be modified directly.)
+  $link = l("background image", $image_filepath);
+  $form['background']['right-col']['top']['subtheme-right-col-url'] = array(
+    '#type' => 'item',
+    '#title' => $link, 
+  );
+   // Store the url along with other CSS settings here (show this one to the user)
+  $form['background']['right-col']['top']['subtheme_id--right-col_background'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Right Column Background (Top) CSS'),
+    '#default_value' => variable_get('subtheme_id--right-col_background', NULL),
+  );
+
+  // Right Column Background (Bottom)
+  $form['background']['right-col']['bottom'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Right Column Bottom'),
+    '#collapsible' => TRUE, 
+    '#collapsed' => TRUE,
+  );
+  // Get the active background image to display to the user
+// todo figure out a more user-friendly way to display this to users.
+  $preset_namespace = 'scale__350x350';
+  $bg = variable_get('subtheme-gridwrpr-url', NULL);
+  $path = drupal_get_path('theme', 'whitehouse'); 
+  $image_filepath = ($bg) ? $bg : $path .'/css/assets/templates/main_back1.gif'; 
+  $bg_image = theme('imagecache', $preset_namespace, $image_filepath, $alt, $title, $attributes);
+  // Prompt user to upload own graphic for background here.
+  $form['background']['right-col']['bottom']['subtheme-gridwrpr-background'] = array(
+    '#type' => 'file',
+    '#title' => t('Upload Right Column Background (Bottom)'),
+    '#size' => 30,
+    '#element_validate' => array('whitehouse_subtheme_save_file'),
+  );
+  // Display background image.
+  $form['background']['right-col']['bottom']['subtheme-gridwrpr-display'] = array(
+    '#type' => 'item',
+    '#title' => $bg_image,
+  );
+  // URL to the background image. (This cannot be modified directly.)
+  $link = l("background image", $image_filepath);
+  $form['background']['right-col']['bottom']['subtheme-gridwrpr-url'] = array(
+    '#type' => 'item',
+    '#title' => $link, 
+  );
+   // Store the url along with other CSS settings here (show this one to the user)
+  $form['background']['right-col']['bottom']['subtheme_class--gridwrpr_background'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Right Column Background (Bottom) CSS'),
+    '#default_value' => variable_get('subtheme_class--gridwrpr_background', NULL),
+  );
+  // Todo show a div with actual theming? Showing the image only is a little missleading. E.g. wilmot and oppenheimer campaigns are just setting background top to a color.
+
+  return $form;
+}
+
