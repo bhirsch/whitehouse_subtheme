@@ -261,49 +261,50 @@ function whitehouse_subtheme_form_alter(&$form, &$form_state, $form_id) {
     '#description' => t('Distance from the top of the screen to the top of the '
                        .'Main Menu. Default: 67px. '),
   );
-  // #navbar-inner a
+
+  // ul#topnav li a  element--ul---id--topnav----element--li----element--a
   $form['primary_menu']['advanced']['a'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Main Menu ( #navbar-inner a ) '),
+    '#title' => t('Main Menu ( ul#topnav li a ) '),
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
   );
-  $fontfamily = 'subtheme_id--navbar-inner----element--a_font-family';
+  $fontfamily = 'subtheme_element--ul---id--topnav----element--li----element--a_font-family';
   $form['primary_menu']['advanced']['a'][$fontfamily] = array(
     '#type' => 'textfield',
     '#title' => t('Font Family'),
     '#default_value' => variable_get($fontfamily, NULL ),
     '#description' => t('e.g. Arial or "Times New Roman" '),
   );
-  $fontsize = 'subtheme_id--navbar-inner----element--a_font-size';
+  $fontsize = 'subtheme_element--ul---id--topnav----element--li----element--a_font-size';
   $form['primary_menu']['advanced']['a'][$fontsize] = array(
     '#type' => 'textfield',
     '#title' => t('Font Size'),
     '#default_value' => variable_get($fontsize, NULL ),
     '#description' => t('e.g. 14px'),
   );
-  $fontweight = 'subtheme_id--navbar-inner----element--a_font-weight';
+  $fontweight = 'subtheme_element--ul---id--topnav----element--li----element--a_font-weight';
   $form['primary_menu']['advanced']['a'][$fontweight] = array(
     '#type' => 'textfield',
     '#title' => t('Font Weight'),
     '#default_value' => variable_get($fontweight, NULL ),
     '#description' => t('e.g. bold or normal'),
   );
-  $color = 'subtheme_id--navbar-inner----element--a_color';
+  $color = 'subtheme_element--ul---id--topnav----element--li----element--a_color';
   $form['primary_menu']['advanced']['a'][$color] = array(
     '#type' => 'textfield',
     '#title' => t('Text Color'),
     '#default_value' => variable_get($color, NULL ),
     '#description' => t('E.g. red, black, #ffffff, #000000. '),
   );
-  $background = 'subtheme_id--navbar-inner----element--a_background-color';
+  $background = 'subtheme_element--ul---id--topnav----element--li----element--a_background-color';
   $form['primary_menu']['advanced']['a'][$background] = array(
     '#type' => 'textfield',
     '#title' => t('background-color'),
     '#default_value' => variable_get($background, NULL ),
     '#description' => t('E.g. red, black, #ffffff, #000000. '),
   );
-  $texttransform = 'subtheme_id--navbar-inner----element--a_text-transform';
+  $texttransform = 'subtheme_element--ul---id--topnav----element--li----element--a_text-transform';
   $form['primary_menu']['advanced']['a'][$texttransform] = array(
     '#type' => 'textfield',
     '#title' => t('text-transform'),
@@ -394,10 +395,10 @@ function whitehouse_subtheme_form_alter(&$form, &$form_state, $form_id) {
     '#default_value' => variable_get($marginright, NULL ),
     '#description' => t('Default: 0px'),
   );
-  // #navbar-inner a:hover
+  // ul#topnav li a:hover
   $form['primary_menu']['advanced']['a-hover'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Main Menu ( #navbar-inner a:hover ) '),
+    '#title' => t('Main Menu ( ul#topnav li a:hover ) '),
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
   );
@@ -410,109 +411,109 @@ function whitehouse_subtheme_form_alter(&$form, &$form_state, $form_id) {
 // */
   $form['primary_menu']['advanced']['a-hover'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Main Menu ( #navbar-inner a:hover ) '),
+    '#title' => t('Main Menu ( ul#topnav li a:hover ) '),
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
   );
-  $color = 'subtheme_id--navbar-inner----element--a:hover_color';
+  $color = 'subtheme_element--ul---id--topnav----element--li----element--a:hover_color';
   $form['primary_menu']['advanced']['a-hover'][$color] = array(
     '#type' => 'textfield',
     '#title' => t('Text Color'),
     '#default_value' => variable_get($color, NULL ),
     '#description' => t('E.g. red, black, #ffffff, #000000. '),
   );
-  $background = 'subtheme_id--navbar-inner----element--a:hover_background-color';
+  $background = 'subtheme_element--ul---id--topnav----element--li----element--a:hover_background-color';
   $form['primary_menu']['advanced']['a-hover'][$background] = array(
     '#type' => 'textfield',
     '#title' => t('background-color'),
     '#default_value' => variable_get($background, NULL ),
     '#description' => t('E.g. red, black, #ffffff, #000000. '),
   );
-  $texttransform = 'subtheme_id--navbar-inner----element--a:hover_text-transform';
+  $texttransform = 'subtheme_element--ul---id--topnav----element--li----element--a:hover_text-transform';
   $form['primary_menu']['advanced']['a-hover'][$texttransform] = array(
     '#type' => 'textfield',
     '#title' => t('text-transform'),
     '#default_value' => variable_get($texttransform, NULL ),
     '#description' => t('E.g. none, capitalize, uppercase, lowercase'),
   );
-  $fontfamily = 'subtheme_id--navbar-inner----element--a:hover_font-family';
+  $fontfamily = 'subtheme_element--ul---id--topnav----element--li----element--a:hover_font-family';
   $form['primary_menu']['advanced']['a-hover'][$fontfamily] = array(
     '#type' => 'textfield',
     '#title' => t('font-family'),
     '#default_value' => variable_get($fontfamily, NULL ),
     '#description' => t('E.g. Arial, "Times New Roman"'),
   );
-  $fontsize = 'subtheme_id--navbar-inner----element--a:hover_font-size';
+  $fontsize = 'subtheme_element--ul---id--topnav----element--li----element--a:hover_font-size';
   $form['primary_menu']['advanced']['a-hover'][$fontsize] = array(
     '#type' => 'textfield',
     '#title' => t('font-size'),
     '#default_value' => variable_get($fontsize, NULL ),
     '#description' => t('E.g. 20px, 20%, or 2em'),
   );
-  $bordertop = 'subtheme_id--navbar-inner----element--a:hover_border-top';
+  $bordertop = 'subtheme_element--ul---id--topnav----element--li----element--a:hover_border-top';
   $form['primary_menu']['advanced']['a-hover'][$bordertop] = array(
     '#type' => 'textfield',
     '#title' => t('border-top'),
     '#default_value' => variable_get($bordertop, NULL ),
     '#description' => t('E.g. 4px solid red'),
   );
-  $borderbottom = 'subtheme_id--navbar-inner----element--a:hover_border-bottom';
+  $borderbottom = 'subtheme_element--ul---id--topnav----element--li----element--a:hover_border-bottom';
   $form['primary_menu']['advanced']['a-hover'][$borderbottom] = array(
     '#type' => 'textfield',
     '#title' => t('border-bottom'),
     '#default_value' => variable_get($borderbottom, NULL ),
     '#description' => t('E.g. 4px solid red'),
   );
-  $borderright = 'subtheme_id--navbar-inner----element--a:hover_border-right';
+  $borderright = 'subtheme_element--ul---id--topnav----element--li----element--a:hover_border-right';
   $form['primary_menu']['advanced']['a-hover'][$borderright] = array(
     '#type' => 'textfield',
     '#title' => t('border-right'),
     '#default_value' => variable_get($borderright, NULL ),
     '#description' => t('E.g. 4px solid red'),
   );
-  $borderleft = 'subtheme_id--navbar-inner----element--a:hover_border-left';
+  $borderleft = 'subtheme_element--ul---id--topnav----element--li----element--a:hover_border-left';
   $form['primary_menu']['advanced']['a-hover'][$borderleft] = array(
     '#type' => 'textfield',
     '#title' => t('border-left'),
     '#default_value' => variable_get($borderleft, NULL ),
     '#description' => t('E.g. 4px solid red'),
   );
-  $letterspacing = 'subtheme_id--navbar-inner----element--a:hover_letter-spacing';
+  $letterspacing = 'subtheme_element--ul---id--topnav----element--li----element--a:hover_letter-spacing';
   $form['primary_menu']['advanced']['a-hover'][$letterspacinge] = array(
     '#type' => 'textfield',
     '#title' => t('letter-spacing'),
     '#default_value' => variable_get($letterspacing, NULL ),
     '#description' => t('Default: 2px'),
   );
-  $textalign = 'subtheme_id--navbar-inner----element--a:hover_text-align';
+  $textalign = 'subtheme_element--ul---id--topnav----element--li----element--a:hover_text-align';
   $form['primary_menu']['advanced']['a-hover'][$textalign] = array(
     '#type' => 'textfield',
     '#title' => t('text-align'),
     '#default_value' => variable_get($textalign, NULL ),
     '#description' => t('Default: center'),
   );
-  $paddingtop = 'subtheme_id--navbar-inner----element--a:hover_padding-top';
+  $paddingtop = 'subtheme_element--ul---id--topnav----element--li----element--a:hover_padding-top';
   $form['primary_menu']['advanced']['a-hover'][$paddingtop] = array(
     '#type' => 'textfield',
     '#title' => t('padding-top'),
     '#default_value' => variable_get($paddingtop, NULL ),
     '#description' => t('Default: 8px'),
   );
-  $paddingbottom = 'subtheme_id--navbar-inner----element--a:hover_padding-bottom';
+  $paddingbottom = 'subtheme_element--ul---id--topnav----element--li----element--a:hover_padding-bottom';
   $form['primary_menu']['advanced']['a-hover'][$paddingbottom] = array(
     '#type' => 'textfield',
     '#title' => t('padding-bottom'),
     '#default_value' => variable_get($paddingbottom, NULL ),
     '#description' => t('Default: 8px'),
   );
-  $marginleft = 'subtheme_id--navbar-inner----element--a:hover_margin-left';
+  $marginleft = 'subtheme_element--ul---id--topnav----element--li----element--a:hover_margin-left';
   $form['primary_menu']['advanced']['a-hover'][$marginleft] = array(
     '#type' => 'textfield',
     '#title' => t('margin-left'),
     '#default_value' => variable_get($marginleft, NULL ),
     '#description' => t('Default: 0px'),
   );
-  $marginright = 'subtheme_id--navbar-inner----element--a:hover_margin-right';
+  $marginright = 'subtheme_element--ul---id--topnav----element--li----element--a:hover_margin-right';
   $form['primary_menu']['advanced']['a-hover'][$marginleft] = array(
     '#type' => 'textfield',
     '#title' => t('margin-right'),
