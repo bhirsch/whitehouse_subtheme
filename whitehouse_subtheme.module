@@ -311,20 +311,6 @@ function whitehouse_subtheme_form_alter(&$form, &$form_state, $form_id) {
     '#default_value' => variable_get($texttransform, NULL ),
     '#description' => t('E.g. none, capitalize, uppercase, lowercase'),
   );
-  $fontfamily = 'subtheme_id--navbar----element--a_font-family';
-  $form['primary_menu']['advanced']['a'][$fontfamily] = array(
-    '#type' => 'textfield',
-    '#title' => t('font-family'),
-    '#default_value' => variable_get($fontfamily, NULL ),
-    '#description' => t('E.g. Arial, "Times New Roman"'),
-  );
-  $fontsize = 'subtheme_id--navbar----element--a_font-size';
-  $form['primary_menu']['advanced']['a'][$fontsize] = array(
-    '#type' => 'textfield',
-    '#title' => t('font-size'),
-    '#default_value' => variable_get($fontsize, NULL ),
-    '#description' => t('E.g. 20px, 20%, or 2em'),
-  );
   $bordertop = 'subtheme_id--navbar----element--a_border-top';
   $form['primary_menu']['advanced']['a'][$bordertop] = array(
     '#type' => 'textfield',
