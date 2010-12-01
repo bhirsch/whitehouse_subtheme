@@ -543,6 +543,16 @@ function whitehouse_subtheme_form_alter(&$form, &$form_state, $form_id) {
   $form = _whitehouse_subtheme_subfooter($form);
   $form = _whitehouse_subtheme_right_col($form);
 
+  // Subheader 
+  $form['subheader'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Subheader CSS'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  // Alter subtheme form to add fieldsets under subheader
+  $form = _whitehouse_subtheme_subheader($form); 
+
   // $form['#validate'][] = 'whitehouse_subtheme_validate'; 
   // $form['#submit'][] = 'whitehouse_subtheme_submit'; 
   }
@@ -660,6 +670,33 @@ function whitehouse_subtheme_save_file($form, &$form_state) {
       imagecache_image_flush($file_path);
     }
   }   
+  return $form;
+}
+
+/**
+ * return $form to subtheme .region-subheader 
+ */
+function _whitehouse_subtheme_subheader($form) {
+  $form['subheader']['subtheme_id--subheader----class--block_margin-top'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Subheader Top Margin'),
+    '#default_value' => variable_get('subtheme_id--subheader----class--block_margin-top', NULL),
+  );
+  $form['subheader']['subtheme_id--subheader----class--block_margin-bottom'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Subheader Bottom Margin'),
+    '#default_value' => variable_get('subtheme_id--subheader----class--block_margin-bottom', NULL),
+  );
+  $form['subheader']['subtheme_id--subheader----class--block_margin-right'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Subheader Right Margin'),
+    '#default_value' => variable_get('subtheme_id--subheader----class--block_margin-right', NULL),
+  );
+  $form['subheader']['subtheme_id--subheader----class--block_margin-left'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Subheader Bottom Left'),
+    '#default_value' => variable_get('subtheme_id--subheader----class--block_margin-left', NULL),
+  );
   return $form;
 }
 
