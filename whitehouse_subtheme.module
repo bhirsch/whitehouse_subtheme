@@ -790,6 +790,24 @@ function _whitehouse_subtheme_footer($form) {
     '#default_value' => variable_get('subtheme_class--ftrwrpr_background', NULL),
   );
 
+  // Footer CSS
+  $form['footer_css'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Footer CSS'),
+    '#collapsible' => TRUE, 
+    '#collapsed' => TRUE,
+  );
+  $form['footer_css']['subtheme_id--footer_font-size'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Footer Font Size'),
+    '#default_value' => variable_get('subtheme_id--footer_font-size', NULL),
+  );
+  $form['footer_css']['subtheme_id--footer_color'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Footer Text Color'),
+    '#default_value' => variable_get('subtheme_id--footer_color', NULL),
+  );
+
   return $form;
 }
 
