@@ -694,7 +694,7 @@ function _whitehouse_subtheme_subheader($form) {
   );
   $form['subheader']['subtheme_id--subheader----class--block_margin-left'] = array(
     '#type' => 'textfield',
-    '#title' => t('Subheader Bottom Left'),
+    '#title' => t('Subheader Left Margin'),
     '#default_value' => variable_get('subtheme_id--subheader----class--block_margin-left', NULL),
   );
   return $form;
